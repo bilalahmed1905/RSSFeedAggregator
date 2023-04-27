@@ -47,18 +47,11 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            rss.setURL(urlField.getText());
-            ViewOutputs.addTo(urlField);
-            String url = rss.getUrl();
-            FeedParser parser = new FeedParser(url);
-            Feed feed = parser.readFeed();
-            rss.setHeadline();
-            System.out.println(rss.getTitle());
-            headlineLbl.setText(rss.getHeadline());
-            urlLabel.setText(rss.getSubArticleLinkatIndex(rss.getHeadlineNum()));
-            for (FeedMessage message : feed.getMessages()) {
+            rss.setURL(customFeedField.getText());
+            ViewOutputs.addTo(customFeedField);
+            rss.getItems();
+            addItems(rss.getItemCount());
 
-            }
         }
 
     }
@@ -67,9 +60,20 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            if (!urlField.getText().equals("")) {
-                clear(urlField);
-            }
+//            if (!urlField.getText().equals("")) {
+//                clear(urlField);
+//            }
+        }
+
+    }
+
+    private class ClearPanel implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            articleList.remove(parentPanel);
+//            DrawnView.revalidate();
+//            n==.repaint();
         }
 
     }
@@ -79,9 +83,8 @@ public class ViewUserActions extends ViewOutputs {
         @Override
         public void actionPerformed(ActionEvent ae) {
             rss.setURL("http://rss.cnn.com/rss/cnn_topstories.rss");
-            rss.setHeadline();
-            headlineLbl.setText(rss.getHeadline());
-            urlLabel.setText(rss.getSubArticleLinkatIndex(rss.getHeadlineNum()));
+            rss.getItems();
+            addItems(rss.getItemCount());
         }
 
     }
@@ -91,14 +94,14 @@ public class ViewUserActions extends ViewOutputs {
         @Override
         public void actionPerformed(ActionEvent ae) {
             rss.setURL("https://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009");
-            rss.setHeadline();
-            headlineLbl.setText(rss.getHeadline());
-            urlLabel.setText(rss.getSubArticleLinkatIndex(rss.getHeadlineNum()));
+            rss.getItems();
+            addItems(rss.getItemCount());
 
         }
 
     }
-private class OpenWebPage implements ActionListener {
+
+    private class OpenWebPage implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -107,6 +110,7 @@ private class OpenWebPage implements ActionListener {
         }
 
     }
+
     /*
      * ViewUserActions constructor used for wiring user actions to GUI elements
      */
@@ -122,10 +126,10 @@ private class OpenWebPage implements ActionListener {
          *
          * Use the following as a template for wiring more user actions.
          */
-        this.setUrlBtn.addActionListener(new SetURL());
-        this.clearBtn.addActionListener(new ClearField());
+//        this.setUrlBtn.addActionListener(new SetURL());
+        this.clearBtn.addActionListener(new ClearPanel());
         this.ctvBtn.addActionListener(new SetURLASCTV());
         this.cnnBtn.addActionListener(new SetURLASCNN());
-        this.openPageBtn.addActionListener(new OpenWebPage());
+        this.setUrlBtn.addActionListener(new SetURL());
     }
 }

@@ -1,25 +1,28 @@
 package cs20viewcontroller;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.imageio.ImageIO;
+import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.undo.UndoManager;
 
 /**
@@ -81,51 +84,60 @@ public class ViewOutputs extends DrawnView {
 
         txtField.setComponentPopupMenu(popup);
     }
+    JPanel parentPanel = new JPanel();
 
-    public static void loadImage() throws IOException {
-        BufferedImage img = ImageIO.read(new File(
-                "/Users/bilalahmed/Downloads/chienpao.png"));
-        ImageIcon icon = new ImageIcon(img);
-        JFrame frame = new JFrame();
-        frame.setLayout(new FlowLayout());
-        frame.setSize(img.getHeight(), img.getWidth());
-        JLabel lbl = new JLabel();
-        lbl.setIcon(icon);
-        frame.add(lbl);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public void addItems(int numberOfItems) {
+        parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
+        for (int i = 0; i < numberOfItems; i++) {
+            String headline = rss.getHeadline(i);
+            String desc = rss.getDesc(i);
+            JPanel itemPanel = new JPanel(new BorderLayout());
+            JLabel headlineLabel = new JLabel(headline);
+            Font title = new Font(Font.SERIF, Font.BOLD, 23);
+            Font subtitle = new Font(Font.SERIF, Font.PLAIN, 14);
+            headlineLabel.setFont(title);
+            JLabel descLabel = new JLabel(desc);
+            descLabel.setPreferredSize(new Dimension(500, 50));
+            descLabel.setFont(subtitle);
+            itemPanel.setBounds(150, 150, 100, 100);
+            itemPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+            itemPanel.add(headlineLabel, BorderLayout.NORTH);
+            itemPanel.add(descLabel, BorderLayout.CENTER);
+//            itemPanel.addMouseListener((MouseListener) this);
+            parentPanel.add(Box.createVerticalStrut(10)); // adjust the spacing by changing the value of 10
+            parentPanel.add(itemPanel);
+        }
+        articleList.setViewportView(parentPanel);
     }
 
     public boolean setCopyPaste() {
-        ViewOutputs.addTo(urlField);
+        ViewOutputs.addTo(customFeedField);
         return true;
     }
-
-    public void setHyperlink() {
-        urlLabel.setForeground(Color.BLUE.darker());
-        urlLabel.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                try {
-
-                    Desktop.getDesktop().browse(new URI(rss.getSubArticleLinkatIndex(rss.getHeadlineNum())));
-
-                } catch (IOException | URISyntaxException e1) {
-                }
-            }
-        });
-    }
-
-    public boolean setClickable() {
-        setHyperlink();
-        return true;
-    }
+//    public void setHyperlink() {
+//        urlLabel.setForeground(Color.BLUE.darker());
+//        urlLabel.addMouseListener(new MouseAdapter() {
+//
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                try {
+//
+//                    Desktop.getDesktop().browse(new URI(rss.getSubArticleLinkatIndex(rss.getHeadlineNum())));
+//
+//                } catch (IOException | URISyntaxException e1) {
+//                }
+//            }
+//        });
+//    }
+//    public boolean setClickable() {
+//        setHyperlink();
+//        return true;
+//    }
 
     public void clear(JTextField field) {
         field.setText("");
     }
 
     boolean x = setCopyPaste();
-    boolean clickable = setClickable();
+//    boolean clickable = setClickable();
 }

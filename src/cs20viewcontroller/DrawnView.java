@@ -37,45 +37,17 @@ public class DrawnView extends AllModelsForView {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        templateChooser = new javax.swing.ButtonGroup();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
         note = new javax.swing.JLabel();
-        urlLabel = new javax.swing.JLabel();
-        urlField = new javax.swing.JTextField();
-        setUrlBtn = new javax.swing.JButton();
-        imageLbl = new javax.swing.JLabel();
-        clearBtn = new javax.swing.JButton();
-        cnnBtn = new javax.swing.JButton();
         ctvBtn = new javax.swing.JButton();
-        headlineLbl = new javax.swing.JLabel();
+        articleList = new javax.swing.JScrollPane();
+        cnnBtn = new javax.swing.JButton();
+        clearBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        openPageBtn = new javax.swing.JButton();
-
-        jTextField1.setText("jTextField1");
+        customFeedField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        setUrlBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        urlLabel.setText("URL");
-
-        urlField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                urlFieldActionPerformed(evt);
-            }
-        });
-
-        setUrlBtn.setText("setUrl");
-
-        imageLbl.setText("img");
-
-        clearBtn.setText("Clear");
-
-        cnnBtn.setText("CNN");
-        cnnBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cnnBtnActionPerformed(evt);
-            }
-        });
 
         ctvBtn.setText("CTV");
         ctvBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -84,111 +56,122 @@ public class DrawnView extends AllModelsForView {
             }
         });
 
-        headlineLbl.setText("Headline");
+        cnnBtn.setText("CNN");
+        cnnBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cnnBtnActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("Add your own RSS Feed");
+        clearBtn.setText("Clear");
+        clearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearBtnActionPerformed(evt);
+            }
+        });
 
-        openPageBtn.setText("Open Article");
+        jLabel1.setFont(new java.awt.Font("Al Nile", 1, 24)); // NOI18N
+        jLabel1.setText("Articles");
+
+        customFeedField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customFeedFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Custom Feed");
+
+        setUrlBtn.setText("Set URL");
+        setUrlBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setUrlBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(529, 529, 529)
-                        .addComponent(note)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(urlField, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(31, 31, 31)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(setUrlBtn)
-                    .addComponent(clearBtn))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(ctvBtn)
-                .addGap(18, 18, 18)
-                .addComponent(cnnBtn)
-                .addGap(19, 19, 19))
+                .addGap(399, 399, 399)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(482, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(articleList, javax.swing.GroupLayout.PREFERRED_SIZE, 909, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(note)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(imageLbl))
-                    .addComponent(headlineLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 795, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(urlLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(openPageBtn)
-                .addGap(175, 175, 175))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(setUrlBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cnnBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(ctvBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(clearBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(customFeedField)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cnnBtn)
-                    .addComponent(ctvBtn))
-                .addGap(51, 51, 51)
-                .addComponent(imageLbl)
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(clearBtn)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(note)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(urlField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(setUrlBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(openPageBtn)
-                .addGap(18, 18, 18)
-                .addComponent(headlineLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(urlLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ctvBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cnnBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(setUrlBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(customFeedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 382, Short.MAX_VALUE))
+                    .addComponent(articleList)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void urlFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_urlFieldActionPerformed
+    private void ctvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ctvBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_urlFieldActionPerformed
+    }//GEN-LAST:event_ctvBtnActionPerformed
 
     private void cnnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cnnBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cnnBtnActionPerformed
 
-    private void ctvBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ctvBtnActionPerformed
+    private void clearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearBtnActionPerformed
+        // TODO add our handling code here:
+    }//GEN-LAST:event_clearBtnActionPerformed
+
+    private void customFeedFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customFeedFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ctvBtnActionPerformed
+    }//GEN-LAST:event_customFeedFieldActionPerformed
+
+    private void setUrlBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setUrlBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_setUrlBtnActionPerformed
     // WARNING: Do NOT modify or write any code in this file!
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JScrollPane articleList;
     public javax.swing.JButton clearBtn;
     public javax.swing.JButton cnnBtn;
     public javax.swing.JButton ctvBtn;
-    public javax.swing.JLabel headlineLbl;
-    public javax.swing.JLabel imageLbl;
+    public javax.swing.JTextField customFeedField;
     public javax.swing.JLabel jLabel1;
-    public javax.swing.JPopupMenu jPopupMenu1;
-    public javax.swing.JTextField jTextField1;
+    public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel note;
-    public javax.swing.JButton openPageBtn;
     public javax.swing.JButton setUrlBtn;
-    public javax.swing.ButtonGroup templateChooser;
-    public javax.swing.JTextField urlField;
-    public javax.swing.JLabel urlLabel;
     // End of variables declaration//GEN-END:variables
 }

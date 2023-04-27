@@ -1,28 +1,31 @@
 package cs20models;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class FeedMessage {
-
     String url;
-    String urls[] = new String[100];
+    ArrayList<String> urls = new ArrayList<>();
     String title;
     String description;
     String link;
     String author;
     String guid;
     String snippet;
-    String headline;
-    String[] headlines;
-    String[] subArticleLinks;
+    int itemCount = 0;
+    ArrayList<String> headlines = new ArrayList<>();
+    ArrayList<String> subArticleLinks = new ArrayList<>();
+    ArrayList<String> descriptions = new ArrayList<>();
+    Elements items[];
     int relHeadlineNum;
+    final String[] defaults = new String[]{""};
 
     public FeedMessage() {
-        this.urls[0] = this.url;
+        
     }
 
     public void setURL(String url) {
@@ -34,35 +37,11 @@ public class FeedMessage {
     }
 
     public void setURLatIndex(String url, int index) {
-        urls[index] = url;
+        urls.add(url);
     }
 
     public String getURLatIndex(int index) {
-        return urls[index];
-    }
-
-    public void resetURLs() {
-        for (int i = 0; i < urls.length; i++) {
-            if (!urls[i].equals("")) {
-                urls[i] = "";
-            }
-        }
-    }
-
-    public void setSubArticleLinkatIndex(String url, int index) {
-        subArticleLinks[index] = url;
-    }
-
-    public String getSubArticleLinkatIndex(int index) {
-        return subArticleLinks[index];
-    }
-
-    public void resetSubArticleLinks() {
-        for (int i = 0; i < subArticleLinks.length; i++) {
-            if (!subArticleLinks[i].equals("")) {
-                subArticleLinks[i] = "";
-            }
-        }
+        return urls.get(index);
     }
 
     public String getTitle() {
@@ -105,65 +84,44 @@ public class FeedMessage {
         this.guid = guid;
     }
 
-    public void setHeadline() {
+    public void getItems() {
         try {
             // parse the HTML document
             Document doc = Jsoup.connect(url).get();
 
             // select item
             Elements items = doc.select("item");
+
             System.out.println(items.size());
-            int i = 1;
             for (Element item : items) {
-                System.out.println(i + ". " + item.children().select("title").text());
-                System.out.println(item.children().select("description").text());
+                System.out.println(itemCount + ". " + item.children().select("title").text());
+                this.headlines.add(item.children().select("title").text());
+                this.subArticleLinks.add(item.children().select("link").text());
+                System.out.println(item.children().select("link").text());
+
+                this.descriptions.add(item.children().select("description").text());
                 System.out.println(item.children().select("description").text());
                 System.out.println("=======");
-                i++;
+                this.itemCount++;
             }
-
-            // select all the links in the document
-            Elements head = doc.select("title");
-            this.headlines = new String[head.size()];
-            Elements links = doc.select("link");
-            this.subArticleLinks = new String[head.size()];
-            // print out the link URLs and text
-            i = 0;
-            for (Element link : head) {
-                this.headlines[i] = link.text();
-                this.subArticleLinks[i] = link.text();
-                i++;
-            }
-            i = 0;
-//            for (Element link : links) {
-//               
-//                i++;
-//            }
-            int r = (int) (Math.random() * head.size());
-            this.headline = this.headlines[r];
-            this.link = this.subArticleLinks[r];
-            System.out.println(this.headline);
-            System.out.println(this.subArticleLinks[r]);
-            this.relHeadlineNum = r;
         } catch (IOException ex) {
-            System.err.println("IOException on line 135 in FeedMessage.java");
+            
         }
     }
 
-    public String getHeadline() {
-        return this.headline;
+    public String getHeadline(int index) {
+        return this.headlines.get(index);
     }
 
-    public int getHeadlineNum() {
-        return this.relHeadlineNum;
+    public String getDesc(int index) {
+        return this.descriptions.get(index);
     }
 
-    public void setSnippet() {
-
+    public String getLink(int index) {
+        return this.subArticleLinks.get(index);
     }
 
-    public String getSnippet() {
-        return this.snippet;
+    public int getItemCount() {
+        return this.itemCount;
     }
-
 }

@@ -30,23 +30,23 @@ public class Browser {
     }
 
     private static void createUI(final JFrame frame) {
-        JPanel panel = new JPanel();
-        LayoutManager layout = new FlowLayout();
-        panel.setLayout(layout);
-
-        JEditorPane jEditorPane = new JEditorPane();
-        jEditorPane.setEditable(false);
-        try {
-            jEditorPane.setPage("http://www.google.com");
-        } catch (IOException e) {
-            jEditorPane.setContentType("text/html");
-            jEditorPane.setText("<html>Page not found.</html>");
-        }
-
-        JScrollPane jScrollPane = new JScrollPane(jEditorPane);
-        jScrollPane.setPreferredSize(new Dimension(540, 400));
-
-        panel.add(jScrollPane);
-        frame.getContentPane().add(panel, BorderLayout.CENTER);
+//        JPanel panel = new JPanel();
+//        LayoutManager layout = new FlowLayout();
+//        panel.setLayout(layout);
+//
+//        JEditorPane jEditorPane = new JEditorPane();
+//        jEditorPane.setEditable(false);
+//        try {
+//            jEditorPane.setPage("http://www.google.com");
+//        } catch (IOException e) {
+//            jEditorPane.setContentType("text/html");
+//            jEditorPane.setText("<html>Page not found.</html>");
+//        }
+//
+//        JScrollPane jScrollPane = new JScrollPane(jEditorPane);
+//        jScrollPane.setPreferredSize(new Dimension(540, 400));
+//
+//        panel.add(jScrollPane);
+//        frame.getContentPane().add(panel, BorderLayout.CENTER);
     }
 }
