@@ -47,11 +47,12 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            if (sql.createTable()) {
             rss.setURL(customFeedField.getText());
             ViewOutputs.addTo(customFeedField);
             rss.getItems();
             addItems(rss.getItemCount());
-
+            }
         }
 
     }
@@ -101,11 +102,34 @@ public class ViewUserActions extends ViewOutputs {
 
     }
 
+    private class SetURLASCBC implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            rss.setURL("https://www.cbc.ca/cmlink/rss-topstories");
+            rss.getItems();
+            addItems(rss.getItemCount());
+
+        }
+
+    }
+    
+    private class SetURLASGlobal implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            rss.setURL("https://globalnews.ca/feed/");
+            rss.getItems();
+            addItems(rss.getItemCount());
+
+        }
+
+    }
+
     private class OpenWebPage implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            Browser.createWindow();
 
         }
 
@@ -130,6 +154,8 @@ public class ViewUserActions extends ViewOutputs {
         this.clearBtn.addActionListener(new ClearPanel());
         this.ctvBtn.addActionListener(new SetURLASCTV());
         this.cnnBtn.addActionListener(new SetURLASCNN());
+        this.cbcBtn.addActionListener(new SetURLASCBC());
         this.setUrlBtn.addActionListener(new SetURL());
+        this.globalBtn.addActionListener(new SetURLASGlobal());
     }
 }

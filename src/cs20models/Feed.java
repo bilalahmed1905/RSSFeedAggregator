@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Feed {
-
+    
     final String title;
     final String link;
     final String description;

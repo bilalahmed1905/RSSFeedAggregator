@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -91,6 +92,7 @@ public class ViewOutputs extends DrawnView {
         for (int i = 0; i < numberOfItems; i++) {
             String headline = rss.getHeadline(i);
             String desc = rss.getDesc(i);
+            String link = rss.getLink(i); // assume the RSS object has a getLink() method to retrieve the link for each item
             JPanel itemPanel = new JPanel(new BorderLayout());
             JLabel headlineLabel = new JLabel(headline);
             Font title = new Font(Font.SERIF, Font.BOLD, 23);
@@ -103,7 +105,25 @@ public class ViewOutputs extends DrawnView {
             itemPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
             itemPanel.add(headlineLabel, BorderLayout.NORTH);
             itemPanel.add(descLabel, BorderLayout.CENTER);
-//            itemPanel.addMouseListener((MouseListener) this);
+            itemPanel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    try {
+                        Desktop.getDesktop().browse(new URI(link)); // open the link in the default system web browser
+                    } catch (IOException | URISyntaxException ex) {
+                    }
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    itemPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1)); // change border color to blue when mouse enters
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    itemPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); // change border color back to gray when mouse exits
+                }
+            });
             parentPanel.add(Box.createVerticalStrut(10)); // adjust the spacing by changing the value of 10
             parentPanel.add(itemPanel);
         }
@@ -114,25 +134,6 @@ public class ViewOutputs extends DrawnView {
         ViewOutputs.addTo(customFeedField);
         return true;
     }
-//    public void setHyperlink() {
-//        urlLabel.setForeground(Color.BLUE.darker());
-//        urlLabel.addMouseListener(new MouseAdapter() {
-//
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                try {
-//
-//                    Desktop.getDesktop().browse(new URI(rss.getSubArticleLinkatIndex(rss.getHeadlineNum())));
-//
-//                } catch (IOException | URISyntaxException e1) {
-//                }
-//            }
-//        });
-//    }
-//    public boolean setClickable() {
-//        setHyperlink();
-//        return true;
-//    }
 
     public void clear(JTextField field) {
         field.setText("");

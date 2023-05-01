@@ -46,4 +46,5 @@ package cs20models;
 public class AllModelsForView extends javax.swing.JFrame {
 
     public FeedMessage rss = new FeedMessage();
+    public SQL sql = new SQL("mydatabase.db");
 }

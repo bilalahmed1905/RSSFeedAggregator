@@ -1,52 +1,61 @@
 package cs20viewcontroller;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.LayoutManager;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.IOException;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.html.*;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/**
- *
- * @author bilalahmed
- */
-public class Browser {
+public class Browser extends JFrame implements ActionListener, HyperlinkListener {
 
-    public static void createWindow() {
-        JFrame frame = new JFrame("Swing Tester");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        createUI(frame);
-        frame.setSize(560, 450);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    private JTextField addressBar;
+    private JEditorPane pane;
+    private String url;
+
+    public Browser(String url) {
+        super("Swing HTML Browser");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addressBar = new JTextField();
+        addressBar.addActionListener(this);
+        pane = new JEditorPane();
+        pane.setEditable(false);
+        pane.addHyperlinkListener(this);
+        this.url = url;
+        add(addressBar, BorderLayout.NORTH);
+        add(new JScrollPane(pane));
+        setSize(new Dimension(600, 600));
     }
 
-    private static void createUI(final JFrame frame) {
-//        JPanel panel = new JPanel();
-//        LayoutManager layout = new FlowLayout();
-//        panel.setLayout(layout);
-//
-//        JEditorPane jEditorPane = new JEditorPane();
-//        jEditorPane.setEditable(false);
-//        try {
-//            jEditorPane.setPage("http://www.google.com");
-//        } catch (IOException e) {
-//            jEditorPane.setContentType("text/html");
-//            jEditorPane.setText("<html>Page not found.</html>");
-//        }
-//
-//        JScrollPane jScrollPane = new JScrollPane(jEditorPane);
-//        jScrollPane.setPreferredSize(new Dimension(540, 400));
-//
-//        panel.add(jScrollPane);
-//        frame.getContentPane().add(panel, BorderLayout.CENTER);
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        String url = this.url;
+        try {
+            pane.setPage(url);
+        } catch (IOException t) {
+        }
+    }
+
+    @Override
+    public void hyperlinkUpdate(HyperlinkEvent evt) {
+        if (evt.getEventType() != HyperlinkEvent.EventType.ACTIVATED) {
+            return;
+        }
+        JEditorPane srcPane = (JEditorPane) evt.getSource();
+        if (evt instanceof HTMLFrameHyperlinkEvent) {
+            HTMLDocument doc = (HTMLDocument) pane.getDocument();
+            doc.processHTMLFrameHyperlinkEvent((HTMLFrameHyperlinkEvent) evt);
+        } else {
+            String url = evt.getURL().toString();
+            addressBar.setText(url);
+            try {
+                pane.setPage(url);
+            } catch (IOException t) {
+            }
+        }
+    }
+
+    public static void main(String args[]) {
+       
     }
 }
