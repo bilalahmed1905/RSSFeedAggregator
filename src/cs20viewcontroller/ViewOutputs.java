@@ -2,28 +2,36 @@ package cs20viewcontroller;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.util.Scanner;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.undo.UndoManager;
 
 /**
@@ -92,7 +100,7 @@ public class ViewOutputs extends DrawnView {
         for (int i = 0; i < numberOfItems; i++) {
             String headline = rss.getHeadline(i);
             String desc = rss.getDesc(i);
-            String link = rss.getLink(i); // assume the RSS object has a getLink() method to retrieve the link for each item
+            String link = rss.getLink(i);
             JPanel itemPanel = new JPanel(new BorderLayout());
             JLabel headlineLabel = new JLabel(headline);
             Font title = new Font(Font.SERIF, Font.BOLD, 23);
@@ -109,25 +117,42 @@ public class ViewOutputs extends DrawnView {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     try {
-                        Desktop.getDesktop().browse(new URI(link)); // open the link in the default system web browser
+                        Desktop.getDesktop().browse(new URI(link)); 
                     } catch (IOException | URISyntaxException ex) {
                     }
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    itemPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1)); // change border color to blue when mouse enters
+                    itemPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    itemPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); // change border color back to gray when mouse exits
+                    itemPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
                 }
             });
-            parentPanel.add(Box.createVerticalStrut(10)); // adjust the spacing by changing the value of 10
+            parentPanel.add(Box.createVerticalStrut(10)); 
             parentPanel.add(itemPanel);
         }
         articleList.setViewportView(parentPanel);
+    }
+
+    public void removeItems() {
+        Component[] componentList = parentPanel.getComponents();
+        int i = 0;
+        for (Component c : componentList) {
+            if (c instanceof Component) {
+
+                //Remove it
+                parentPanel.remove(c);
+            }
+            i++;
+        }
+
+        parentPanel.revalidate();
+        parentPanel.repaint();
+        rss.clearLists();
     }
 
     public boolean setCopyPaste() {
@@ -138,7 +163,48 @@ public class ViewOutputs extends DrawnView {
     public void clear(JTextField field) {
         field.setText("");
     }
+    private class SetURL implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+                if (!customFeedField.getText().equals("")) {
+                rss.setURL(customFeedField.getText());
+                rss.getItems();
+                addItems(rss.getItemCount());
+                } 
+              
+
+        }
+
+    }
+    public void updateSubscribedFeeds() throws IOException {
+        File s = new File("../subscribedFeeds.txt");
+        FileWriter fw = new FileWriter(s, true);
+           Scanner sc = new Scanner(s);
+           String str = "";
+           long lines = 0;
+           while (sc.hasNext()) {
+             str += sc.nextLine() + "\n";
+             lines++;
+           }
+//           if (str.contains(customFeedField.getText())) {
+//               System.out.println("feed already subscribed");
+//           } else {
+            fw.write(customFeedField.getText());
+//           }
+           JButton button = new JButton();
+           button.setSize(72, 22);
+           button.setText(feedNameField.getText());
+           buttonPanel.add(Box.createVerticalStrut(10));
+           button.addActionListener(new SetURL());
+           buttonPanel.setLayout(new BorderLayout());
+           buttonPanel.add(button);
+           buttonPanel.repaint();
+           buttonPanel.revalidate();
+           buttonPanel.setVisible(true);
+           System.out.println("working");
+           fw.close();
+    }
     boolean x = setCopyPaste();
 //    boolean clickable = setClickable();
 }

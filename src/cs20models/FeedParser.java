@@ -22,7 +22,6 @@ public class FeedParser {
     static final String ITEM = "item";
     static final String PUB_DATE = "pubDate";
     static final String GUID = "guid";
-    static final String ARTICLESNIPPET = "snippet";
 
     final URL url;
 
@@ -46,7 +45,6 @@ public class FeedParser {
             String author = "";
             String pubdate = "";
             String guid = "";
-            String snippet = "";
 
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             InputStream in = read();
@@ -62,7 +60,7 @@ public class FeedParser {
                         if (isFeedHeader) {
                             isFeedHeader = false;
                             feed = new Feed(title, link, description, language,
-                                    copyright, pubdate, snippet);
+                                    copyright, pubdate);
                         }
                         event = eventReader.nextEvent();
                         break;
@@ -89,9 +87,6 @@ public class FeedParser {
                         break;
                     case COPYRIGHT:
                         copyright = getCharacterData(event, eventReader);
-                        break;
-                    case ARTICLESNIPPET: 
-                        snippet = getCharacterData(event, eventReader);
                         break;
                     }
                 } else if (event.isEndElement()) {

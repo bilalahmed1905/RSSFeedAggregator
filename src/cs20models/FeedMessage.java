@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 public class FeedMessage {
 
     String url;
@@ -17,11 +16,10 @@ public class FeedMessage {
     String author;
     String guid;
     int itemCount = 0;
+    ArrayList<Feed> articles = new ArrayList<>();
     ArrayList<String> headlines = new ArrayList<>();
     ArrayList<String> subArticleLinks = new ArrayList<>();
     ArrayList<String> descriptions = new ArrayList<>();
-    Elements items[];
-
     public FeedMessage() {
 
     }
@@ -81,17 +79,22 @@ public class FeedMessage {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-
-    public void getItems() {
+   public ArrayList<String> removeDuplicates(ArrayList<String> arr) {
+    for (int i = 0; i < arr.size(); i++) {
+      for (int y = 0; y < arr.size(); y++) {
+       if (arr.get(i).equals(arr.get(y)) && i != y) {
+         arr.remove(y);
+       }
+    }
+    }
+    return arr;
+   }
+    public void getItems(){
         try {
-            // parse the HTML document
             Document doc = Jsoup.connect(url).get();
-            // select item
+
             Elements items = doc.select("item");
-
-            System.out.println(items.size());
             for (Element item : items) {
-
                 this.subArticleLinks.add(item.children().select("link").text());
                 this.headlines.add(item.children().select("title").text());
                 if (item.children().select("description").text().contains("img")) {
@@ -99,10 +102,14 @@ public class FeedMessage {
                 } else {
                     this.descriptions.add(item.children().select("description").text());
                 }
-              
                 this.itemCount++;
-
+             
             }
+            this.itemCount = this.headlines.size();
+            removeDuplicates(this.subArticleLinks);
+                removeDuplicates(this.headlines);
+            removeDuplicates(this.descriptions);
+            
         } catch (IOException ex) {
 
         }
@@ -122,5 +129,10 @@ public class FeedMessage {
 
     public int getItemCount() {
         return this.itemCount;
+    }
+    public void clearLists() {
+     this.subArticleLinks.clear();
+     this.headlines.clear();  
+     this.descriptions.clear();
     }
 }

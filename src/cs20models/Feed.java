@@ -10,19 +10,17 @@ public class Feed {
     final String language;
     final String copyright;
     final String pubDate;
-    final String articleSnippet;
 
     final List<FeedMessage> entries = new ArrayList<>();
 
     public Feed(String title, String link, String description, String language,
-            String copyright, String pubDate, String snippet) {
+            String copyright, String pubDate) {
         this.title = title;
         this.link = link;
         this.description = description;
         this.language = language;
         this.copyright = copyright;
         this.pubDate = pubDate;
-        this.articleSnippet = snippet;
     }
 
     public List<FeedMessage> getMessages() {
@@ -53,9 +51,6 @@ public class Feed {
         return pubDate;
     }
 
-    public String getSnippet() {
-        return articleSnippet;
-    }
 
     @Override
     public String toString() {

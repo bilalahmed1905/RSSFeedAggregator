@@ -15,6 +15,10 @@ import java.awt.event.ActionListener;
 import cs20models.FeedParser;
 import cs20models.Feed;
 import cs20models.FeedMessage;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * ViewUserActions is a class that contains actions users can trigger.
@@ -47,12 +51,15 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            if (sql.createTable()) {
-            rss.setURL(customFeedField.getText());
-            ViewOutputs.addTo(customFeedField);
-            rss.getItems();
-            addItems(rss.getItemCount());
-            }
+                rss.setURL(customFeedField.getText());
+                ViewOutputs.addTo(customFeedField);
+                rss.getItems();
+                try {
+                    updateSubscribedFeeds();
+                } catch (IOException ex) {
+                    Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                addItems(rss.getItemCount());
         }
 
     }
@@ -72,9 +79,7 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            articleList.remove(parentPanel);
-//            DrawnView.revalidate();
-//            n==.repaint();
+            removeItems();
         }
 
     }
@@ -113,7 +118,7 @@ public class ViewUserActions extends ViewOutputs {
         }
 
     }
-    
+
     private class SetURLASGlobal implements ActionListener {
 
         @Override
