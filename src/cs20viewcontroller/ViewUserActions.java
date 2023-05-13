@@ -10,15 +10,14 @@
  */
 package cs20viewcontroller;
 
+import cs20models.FeedParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import cs20models.FeedParser;
-import cs20models.Feed;
-import cs20models.FeedMessage;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import cs20models.SQL;
+import java.sql.SQLException;
 
 /**
  * ViewUserActions is a class that contains actions users can trigger.
@@ -51,14 +50,15 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-                rss.setURL(customFeedField.getText());
+                FeedParser parser = new FeedParser(customFeedField.getText());
+            try {
+                SQL.addChannel(parser.readFeed());
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           rss.setURL(customFeedField.getText());
                 ViewOutputs.addTo(customFeedField);
                 rss.getItems();
-                try {
-                    updateSubscribedFeeds();
-                } catch (IOException ex) {
-                    Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 addItems(rss.getItemCount());
         }
 
@@ -135,7 +135,7 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-
+          
         }
 
     }

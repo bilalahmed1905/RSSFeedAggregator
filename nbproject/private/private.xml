@@ -5,7 +5,7 @@
             <url>src/cs20models/FeedParser.java</url>
             <bookmark id="1">
                 <name/>
-                <line>103</line>
+                <line>98</line>
                 <key/>
             </bookmark>
         </file>
@@ -22,11 +22,11 @@
         <group>
             <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20models/SQL.java</file>
             <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20models/Feed.java</file>
-            <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20models/FeedParser.java</file>
             <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20models/FeedMessage.java</file>
+            <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20models/FeedParser.java</file>
             <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20viewcontroller/ViewOutputs.java</file>
             <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20viewcontroller/ViewUserActions.java</file>
-            <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20models/AllModelsForView.java</file>
+            <file>file:/Users/bilalahmed/NetBeansProjects/RSSFeedAggregator/src/cs20viewcontroller/DrawnView.java</file>
         </group>
     </open-files>
 </project-private>

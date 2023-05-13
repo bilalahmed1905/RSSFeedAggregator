@@ -6,22 +6,16 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -143,8 +137,6 @@ public class ViewOutputs extends DrawnView {
         int i = 0;
         for (Component c : componentList) {
             if (c instanceof Component) {
-
-                //Remove it
                 parentPanel.remove(c);
             }
             i++;
@@ -194,7 +186,6 @@ public class ViewOutputs extends DrawnView {
 //           }
            JButton button = new JButton();
            button.setSize(72, 22);
-           button.setText(feedNameField.getText());
            buttonPanel.add(Box.createVerticalStrut(10));
            button.addActionListener(new SetURL());
            buttonPanel.setLayout(new BorderLayout());

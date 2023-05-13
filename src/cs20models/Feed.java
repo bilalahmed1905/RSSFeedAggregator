@@ -22,7 +22,14 @@ public class Feed {
         this.copyright = copyright;
         this.pubDate = pubDate;
     }
-
+ public Feed(String title, String link, String description, String language, String pubDate) {
+        this.title = title;
+        this.link = link;
+        this.description = description;
+        this.language = language;
+        this.copyright = "";
+        this.pubDate = pubDate;
+    }
     public List<FeedMessage> getMessages() {
         return entries;
     }

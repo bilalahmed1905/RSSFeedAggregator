@@ -1,62 +1,88 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package cs20models;
 
+import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import org.jsoup.nodes.Element;
 
 public class SQL {
 
-    String url;
+    static final String tableName = "Channel";
 
-    public SQL(String url) {
-        this.url = url;
-    }
-
-    public String getTableURL() {
-        return this.url;
-    }
-
-    public boolean createTable() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS feedInfo (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	channelName text NOT NULL,\n"
-                + "	articleLink text NOT NULL,\n"
-                + "	headlines text NOT NULL,\n"
-                + "	desc text NOT NULL,\n"
-                + ");";
-
-        try ( Connection conn = DriverManager.getConnection(this.url);  Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-            return true;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public void store(int id, String channelName, String url, String headline, String desc) {
-        String sql = "INSERT into feedInfo (id, channelName, articleLink, headlines, desc) \n VALUES (" + id + " test, " + url + ", " + headline +", " + desc + ")";
-        try ( Connection conn = DriverManager.getConnection(this.url);  Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
+    private static Connection connect() {
+        // SQLite connection string
+        String url = "jdbc:sqlite:rss.db";
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return conn;
     }
-    
-    public void store(int id, String channelName, String url, String headline) {
-        String sql = "INSERT into feedInfo (id, channelName, articleLink, headlines, desc) \n VALUES (" + id + " test, " + url + ", " + headline + ")";
-        try ( Connection conn = DriverManager.getConnection(this.url);  Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
+
+    public static void selectAll() throws SQLException {
+        String sql = "SELECT * FROM " + tableName;
+
+        Connection conn = SQL.connect();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while (rs.next()) {
+            System.out.println(rs.getInt("id") + rs.getString("title"));
+        }
+
+    }
+
+    public static ArrayList<Feed> getAllChannels() throws SQLException {
+        String sql = "SELECT * FROM " + tableName;
+        Connection conn = SQL.connect();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        ArrayList<Feed> channels = new ArrayList<>();
+        while (rs.next()) {
+            Feed f = new Feed(rs.getString("channelTitle"), rs.getString("channelURL"), rs.getString("channelDesc"), rs.getString("channelLang"), rs.getString("channelLastPubDate"));
+            channels.add(f);
+        }
+        return channels;
+    }
+
+    public static Feed getChannelInfo(int id) throws SQLException {
+        String sql = "select from " + tableName + " where id=" + id;
+        Connection conn = SQL.connect();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        Feed channel = new Feed(rs.getString("channelTitle"), rs.getString("channelURL"), rs.getString("channelDesc"), rs.getString("channelLang"), rs.getString("channelLastPubDate"));
+        return channel;
+    }
+
+    public static Feed getChannelInfo(String title) throws SQLException {
+        String sql = "select from " + tableName + " where title='" + title + "'";
+        Connection conn = SQL.connect();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        Feed channel = new Feed(rs.getString("channelTitle"), rs.getString("channelURL"), rs.getString("channelDesc"), rs.getString("channelLang"), rs.getString("channelLastPubDate"));
+        return channel;
+    }
+
+    public static void addChannel(Feed f) throws SQLException {
+        String sql = "insert into " + tableName + " (channelTitle, channelCategory, channelLastPubDate, channelDesc, channelURL, channelLang)"
+                + " values (?, ?, ?, ?, ?, ?)";
+        PreparedStatement ps = SQL.connect().prepareStatement(sql);
+        try {
+            ps.setString(1, f.title);
+            ps.setString(2, "News");
+            ps.setString(3, f.pubDate);
+            ps.setString(4, f.description);
+            ps.setString(5, f.link);
+            ps.setString(6, f.language);
+            ps.executeUpdate();
+
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } finally {
+            System.out.println("Successfully Stored into database!!!");
         }
     }
-    
 }

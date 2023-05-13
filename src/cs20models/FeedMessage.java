@@ -16,10 +16,10 @@ public class FeedMessage {
     String author;
     String guid;
     int itemCount = 0;
-    ArrayList<Feed> articles = new ArrayList<>();
-    ArrayList<String> headlines = new ArrayList<>();
-    ArrayList<String> subArticleLinks = new ArrayList<>();
-    ArrayList<String> descriptions = new ArrayList<>();
+    ArrayList<Feed> articles = new ArrayList<>(1000);
+    ArrayList<String> headlines = new ArrayList<>(1000);
+    ArrayList<String> subArticleLinks = new ArrayList<>(1000);
+    ArrayList<String> descriptions = new ArrayList<>(1000);
     public FeedMessage() {
 
     }
@@ -106,9 +106,9 @@ public class FeedMessage {
              
             }
             this.itemCount = this.headlines.size();
-            removeDuplicates(this.subArticleLinks);
-                removeDuplicates(this.headlines);
-            removeDuplicates(this.descriptions);
+//            removeDuplicates(this.subArticleLinks);
+//                removeDuplicates(this.headlines);
+//            removeDuplicates(this.descriptions);
             
         } catch (IOException ex) {
 
@@ -134,5 +134,9 @@ public class FeedMessage {
      this.subArticleLinks.clear();
      this.headlines.clear();  
      this.descriptions.clear();
+     
+     this.subArticleLinks = new ArrayList<>();
+     this.descriptions = new ArrayList<>();
+     this.headlines = new ArrayList<>();
     }
 }

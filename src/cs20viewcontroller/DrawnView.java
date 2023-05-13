@@ -43,8 +43,6 @@ public class DrawnView extends AllModelsForView {
         customFeedField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        feedNameField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         buttonPanel = new javax.swing.JPanel();
         setUrlBtn = new javax.swing.JButton();
         cbcBtn = new javax.swing.JButton();
@@ -67,14 +65,6 @@ public class DrawnView extends AllModelsForView {
         jLabel2.setText("Custom Feed URL");
 
         jLabel3.setText("Double click to open article");
-
-        feedNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                feedNameFieldActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Feed Name");
 
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
@@ -159,11 +149,9 @@ public class DrawnView extends AllModelsForView {
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(feedNameField, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(note)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(jLabel4))
+                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(customFeedField)
                                     .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -197,13 +185,9 @@ public class DrawnView extends AllModelsForView {
                         .addComponent(cnnBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbcBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(45, 45, 45)
                         .addComponent(note)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(feedNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(34, 34, 34)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(customFeedField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -243,10 +227,6 @@ public class DrawnView extends AllModelsForView {
     private void globalBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_globalBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_globalBtnActionPerformed
-
-    private void feedNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feedNameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_feedNameFieldActionPerformed
     // WARNING: Do NOT modify or write any code in this file!
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JScrollPane articleList;
@@ -256,12 +236,10 @@ public class DrawnView extends AllModelsForView {
     public javax.swing.JButton cnnBtn;
     public javax.swing.JButton ctvBtn;
     public javax.swing.JTextField customFeedField;
-    public javax.swing.JTextField feedNameField;
     public javax.swing.JButton globalBtn;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
-    public javax.swing.JLabel jLabel4;
     public javax.swing.JLabel note;
     public javax.swing.JButton setUrlBtn;
     // End of variables declaration//GEN-END:variables
