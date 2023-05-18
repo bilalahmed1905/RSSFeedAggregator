@@ -97,7 +97,6 @@ public class FeedParser {
                         message.setGuid(guid);
                         message.setLink(link);
                         message.setTitle(title);
-                        feed.getMessages().add(message);
                         event = eventReader.nextEvent();
                     }
                 }

@@ -30,6 +30,8 @@
  */
 package cs20models;
 
+import java.util.ArrayList;
+
 /**
  * List out every model class you create here that will be directly used by your
  * GUI (i.e. the View and Controller classes) as instance variables.
@@ -46,5 +48,5 @@ package cs20models;
 public class AllModelsForView extends javax.swing.JFrame {
 
     public FeedMessage rss = new FeedMessage();
-//    public SQL sql = new SQL("/Users/bilalahmed/Downloads/mydatabase.db");
+    public ArrayList<FeedMessage> feeds = new ArrayList<>();
 }

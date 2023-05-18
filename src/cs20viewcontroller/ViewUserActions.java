@@ -10,6 +10,7 @@
  */
 package cs20viewcontroller;
 
+import cs20models.FeedMessage;
 import cs20models.FeedParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import cs20models.SQL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * ViewUserActions is a class that contains actions users can trigger.
@@ -50,16 +53,26 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-                FeedParser parser = new FeedParser(customFeedField.getText());
+            ArrayList<FeedMessage> arr = new ArrayList<>(10000);
+            try {
+                arr = SQL.getAllArticles();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            FeedParser parser = new FeedParser(customFeedField.getText());
             try {
                 SQL.addChannel(parser.readFeed());
             } catch (SQLException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
             }
-           rss.setURL(customFeedField.getText());
-                ViewOutputs.addTo(customFeedField);
-                rss.getItems();
-                addItems(rss.getItemCount());
+            rss.setURL(customFeedField.getText());
+            ViewOutputs.addTo(customFeedField);
+            try {
+                rss.sendItemsToDatabase();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            addItems(rss.getItemCount(), arr);
         }
 
     }
@@ -88,9 +101,18 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            try {
+                feeds = SQL.getAllArticles();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
             rss.setURL("http://rss.cnn.com/rss/cnn_topstories.rss");
-            rss.getItems();
-            addItems(rss.getItemCount());
+            try {
+                rss.sendItemsToDatabase();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            addItems(rss.getItemCount(), feeds);
         }
 
     }
@@ -99,9 +121,18 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            try {
+                feeds = SQL.getAllArticles();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
             rss.setURL("https://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009");
-            rss.getItems();
-            addItems(rss.getItemCount());
+            try {
+                rss.sendItemsToDatabase();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            addItems(rss.getItemCount(), feeds);
 
         }
 
@@ -111,9 +142,22 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            ArrayList<FeedMessage> arr = new ArrayList<>();
+            try {
+                arr = SQL.getAllArticles();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
             rss.setURL("https://www.cbc.ca/cmlink/rss-topstories");
-            rss.getItems();
-            addItems(rss.getItemCount());
+            try {
+                rss.sendItemsToDatabase();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (arr != null) {
+                addItems(rss.getItemCount(), arr);
+            }
 
         }
 
@@ -123,10 +167,20 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
+            ArrayList<FeedMessage> arr = new ArrayList<>();
+            try {
+                arr = SQL.getAllArticles();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
             rss.setURL("https://globalnews.ca/feed/");
-            rss.getItems();
-            addItems(rss.getItemCount());
-
+              addItems(rss.getItemCount(), arr);
+            try {
+                rss.sendItemsToDatabase();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                addItems(rss.getItemCount(), arr);
         }
 
     }
@@ -135,10 +189,26 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-          
+
         }
 
     }
+
+  private class LoadFromDatabase implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        ArrayList<FeedMessage> arr = new ArrayList<>();
+        try {
+            arr = SQL.getAllArticles();
+            System.out.println(arr.get(1).getTitle() + " " + SQL.getResultSize());
+            addItems(SQL.getResultSize(), arr);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
+
 
     /*
      * ViewUserActions constructor used for wiring user actions to GUI elements
@@ -155,7 +225,7 @@ public class ViewUserActions extends ViewOutputs {
          *
          * Use the following as a template for wiring more user actions.
          */
-//        this.setUrlBtn.addActionListener(new SetURL());
+        this.loadFromDatabaseBtn.addActionListener(new LoadFromDatabase());
         this.clearBtn.addActionListener(new ClearPanel());
         this.ctvBtn.addActionListener(new SetURLASCTV());
         this.cnnBtn.addActionListener(new SetURLASCNN());

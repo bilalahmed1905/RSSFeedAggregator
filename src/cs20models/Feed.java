@@ -1,6 +1,4 @@
 package cs20models;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Feed {
     
@@ -10,8 +8,6 @@ public class Feed {
     final String language;
     final String copyright;
     final String pubDate;
-
-    final List<FeedMessage> entries = new ArrayList<>();
 
     public Feed(String title, String link, String description, String language,
             String copyright, String pubDate) {
@@ -29,9 +25,6 @@ public class Feed {
         this.language = language;
         this.copyright = "";
         this.pubDate = pubDate;
-    }
-    public List<FeedMessage> getMessages() {
-        return entries;
     }
 
     public String getTitle() {
