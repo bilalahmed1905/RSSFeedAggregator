@@ -91,7 +91,7 @@ public class FeedParser {
                     }
                 } else if (event.isEndElement()) {
                     if (event.asEndElement().getName().getLocalPart() == (ITEM)) {
-                        FeedMessage message = new FeedMessage();
+                        FeedItem message = new FeedItem();
                         message.setAuthor(author);
                         message.setDescription(description);
                         message.setGuid(guid);

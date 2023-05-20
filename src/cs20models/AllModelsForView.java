@@ -47,6 +47,5 @@ import java.util.ArrayList;
  */
 public class AllModelsForView extends javax.swing.JFrame {
 
-    public FeedMessage rss = new FeedMessage();
-    public ArrayList<FeedMessage> feeds = new ArrayList<>();
+    public FeedItem rss = new FeedItem();
 }

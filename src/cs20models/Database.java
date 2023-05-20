@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-public class SQL {
+public class Database {
     public static int resultSize = 0;
     static final String CHANNELTABLE = "Channel";
     static final String FEEDTABLE = "Feed";
@@ -22,7 +22,7 @@ public class SQL {
 
     public static void selectAll() throws SQLException {
         String sql = "SELECT * FROM " + CHANNELTABLE;
-        Connection conn = SQL.connect();
+        Connection conn = Database.connect();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         while (rs.next()) {
@@ -34,7 +34,7 @@ public class SQL {
    }
     public static ArrayList<Feed> getAllChannels() throws SQLException {
         String sql = "SELECT * FROM " + CHANNELTABLE;
-        Connection conn = SQL.connect();
+        Connection conn = Database.connect();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         ArrayList<Feed> channels = new ArrayList<>();
@@ -47,7 +47,7 @@ public class SQL {
     
     public static Feed getChannelInfo(int id) throws SQLException {
         String sql = "select from " + CHANNELTABLE + " where id=" + id;
-        Connection conn = SQL.connect();
+        Connection conn = Database.connect();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Feed channel = new Feed(rs.getString("channelTitle"), rs.getString("channelURL"), rs.getString("channelDesc"), rs.getString("channelLang"), rs.getString("channelLastPubDate"));
@@ -55,7 +55,7 @@ public class SQL {
     }
     public static Feed getChannelInfo(String title) throws SQLException {
         String sql = "select from " + CHANNELTABLE + " where channelTitle='" + title + "'";
-        Connection conn = SQL.connect();
+        Connection conn = Database.connect();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Feed channel = new Feed(rs.getString("channelTitle"), rs.getString("channelURL"), rs.getString("channelDesc"), rs.getString("channelLang"), rs.getString("channelLastPubDate"));
@@ -65,7 +65,7 @@ public class SQL {
     public static void addChannel(Feed f) throws SQLException {
         String sql = "insert into " + CHANNELTABLE + " (channelTitle, channelCategory, channelLastPubDate, channelDesc, channelURL, channelLang)"
                 + " values (?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = SQL.connect().prepareStatement(sql);
+        PreparedStatement ps = Database.connect().prepareStatement(sql);
         try {
             ps.setString(1, f.title);
             ps.setString(2, "News");
@@ -81,9 +81,9 @@ public class SQL {
         }
     }
     
-    public static void addArticle(FeedMessage f) throws SQLException {
+    public static void addArticle(FeedItem f) throws SQLException {
      String sql = "insert into " + FEEDTABLE  + "( itemTitle, itemDesc, itemImage, itemLink, itemDate, itemReadStatus, itemCategory, itemAuthor) values (?,?,?,?,?,?,?,?)";
-     PreparedStatement ps = SQL.connect().prepareStatement(sql);
+     PreparedStatement ps = Database.connect().prepareStatement(sql);
         try {
             ps.setString(1, f.title);
             ps.setString(2, f.description);
@@ -100,14 +100,14 @@ public class SQL {
         }
     }
 
-    public static ArrayList<FeedMessage> getAllArticles() throws SQLException {
+    public static ArrayList<FeedItem> getAllArticles() throws SQLException {
      String sql = "select * from " + FEEDTABLE;
-     Connection conn = SQL.connect();
+     Connection conn = Database.connect();
      Statement stmt = conn.createStatement();
      ResultSet rs = stmt.executeQuery(sql);
-     ArrayList<FeedMessage> articles = new ArrayList<>();
+     ArrayList<FeedItem> articles = new ArrayList<>();
         while (rs.next()) {
-            FeedMessage f = new FeedMessage();
+            FeedItem f = new FeedItem();
             f.setURL(rs.getString("itemLink"));
             f.setAuthor(rs.getString("itemAuthor"));
             f.setDesc(rs.getString("itemDesc"));

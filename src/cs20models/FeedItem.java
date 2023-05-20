@@ -3,29 +3,24 @@ package cs20models;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class FeedMessage {
+public class FeedItem {
 
     String url;
-    ArrayList<String> urls = new ArrayList<>();
     String title;
     String description;
     String link;
     String author;
     String guid;
     int itemCount = 0;
-    ArrayList<FeedMessage> articles = new ArrayList<>(1000);
-    ArrayList<String> headlines = new ArrayList<>(1000);
-    ArrayList<String> subArticleLinks = new ArrayList<>(1000);
-    ArrayList<String> descriptions = new ArrayList<>(1000);
+    ArrayList<FeedItem> articles = new ArrayList<>(1000);
     public String date;
 
-    public FeedMessage() {
+    public FeedItem() {
 
     }
 
@@ -35,14 +30,6 @@ public class FeedMessage {
 
     public String getURL() {
         return this.url;
-    }
-
-    public void setURLatIndex(String url, int index) {
-        urls.add(url);
-    }
-
-    public String getURLatIndex(int index) {
-        return urls.get(index);
     }
 
     public String getTitle() {
@@ -105,21 +92,18 @@ public class FeedMessage {
             Document doc = Jsoup.connect(this.url).get();
             Elements items = doc.select("item");
             for (Element item : items) {
-                this.subArticleLinks.add(item.children().select("link").text());
-                this.headlines.add(item.children().select("title").text());
+                articles.add(itemCount, new FeedItem());
                 if (item.children().select("description").text().contains("img")) {
-                    this.descriptions.add(" ");
+                 articles.get(itemCount).setDesc(" ");
                 } else {
-                    this.descriptions.add(item.children().select("description").text());
+                 articles.get(itemCount).setDesc(item.children().select("description").text());
                 }
-                articles.add(itemCount, new FeedMessage());
                 articles.get(itemCount).setGuid(item.children().select("guid").text());
                 articles.get(itemCount).setAuthor(item.children().select("author").text());
-                articles.get(itemCount).setTitle(this.headlines.get(itemCount));
-                articles.get(itemCount).setURL(this.subArticleLinks.get(itemCount));
-                articles.get(itemCount).setDesc(this.descriptions.get(itemCount));
+                articles.get(itemCount).setTitle(item.children().select("title").text());
+                articles.get(itemCount).setURL(item.children().select("link").text());
                 articles.get(itemCount).setDate(item.children().select("pubDate").text());
-                SQL.addArticle(this.articles.get(itemCount));
+                Database.addArticle(this.articles.get(itemCount));
                 this.itemCount++;
             }
 
@@ -138,14 +122,5 @@ public class FeedMessage {
 
     public int getItemCount() {
         return this.itemCount;
-    }
-
-    public void clearLists() {
-        this.subArticleLinks.clear();
-        this.headlines.clear();
-        this.descriptions.clear();
-        this.subArticleLinks = new ArrayList<>();
-        this.descriptions = new ArrayList<>();
-        this.headlines = new ArrayList<>();
     }
 }

@@ -1,6 +1,6 @@
 package cs20viewcontroller;
 
-import cs20models.FeedMessage;
+import cs20models.FeedItem;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -8,17 +8,22 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -41,7 +46,10 @@ import javax.swing.undo.UndoManager;
  * @author cheng
  */
 public class ViewOutputs extends DrawnView {
-    
+
+    private final Browser browser = new Browser();
+    private final JButton openInBrowser = new JButton();
+    public String pageURL = "";
     public static void addTo(JTextField txtField) {
         JPopupMenu popup = new JPopupMenu();
         UndoManager undoManager = new UndoManager();
@@ -52,21 +60,21 @@ public class ViewOutputs extends DrawnView {
                 txtField.copy();
             }
         };
-        
+
         Action cutAction = new AbstractAction("Cut") {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 txtField.cut();
             }
         };
-        
+
         Action pasteAction = new AbstractAction("Paste") {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 txtField.paste();
             }
         };
-        
+
         Action selectAllAction = new AbstractAction("Select All") {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -79,12 +87,34 @@ public class ViewOutputs extends DrawnView {
         popup.add(pasteAction);
         popup.addSeparator();
         popup.add(selectAllAction);
-        
+
         txtField.setComponentPopupMenu(popup);
+    }
+    private class OpenInDefaultBrowser implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            try {
+                Desktop.getDesktop().browse(new URI(pageURL));
+            } catch (IOException | URISyntaxException ex) {
+            }
+        }
+
+    }
+    public void displayWebpage(String url) {
+        pageURL = url;
+        browser.loadURL(url);
+        openInBrowser.setText("Open Page in Browser");
+        openInBrowser.addActionListener(new OpenInDefaultBrowser());
+        openInBrowser.setSize(new Dimension(75, 33));
+        browserPanel.add(openInBrowser);
+        browserPanel.setViewportView(browser);
+        browserPanel.revalidate();
+        browserPanel.repaint();
     }
     JPanel parentPanel = new JPanel();
 
-    public void addItems(int numberOfItems, ArrayList<FeedMessage> arr) {
+    public void addItems(int numberOfItems, ArrayList<FeedItem> arr) {
         parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
         for (int i = 0; i < numberOfItems; i++) {
             String headline = arr.get(i).getTitle();
@@ -96,6 +126,7 @@ public class ViewOutputs extends DrawnView {
             Font subtitle = new Font(Font.SERIF, Font.PLAIN, 14);
             headlineLabel.setFont(title);
             JLabel descLabel = new JLabel(desc);
+            headlineLabel.setPreferredSize(new Dimension(200, 25));
             descLabel.setPreferredSize(new Dimension(500, 50));
             descLabel.setFont(subtitle);
             itemPanel.setBounds(150, 150, 100, 100);
@@ -105,30 +136,27 @@ public class ViewOutputs extends DrawnView {
             itemPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    try {
-                        Desktop.getDesktop().browse(new URI(link)); 
-                    } catch (IOException | URISyntaxException ex) {
-                    }
+                    displayWebpage(link);
                 }
-                
+
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     itemPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
                 }
-                
+
                 @Override
                 public void mouseExited(MouseEvent e) {
                     itemPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
                 }
             });
-            parentPanel.add(Box.createVerticalStrut(10));            
+            parentPanel.add(Box.createVerticalStrut(10));
             parentPanel.add(itemPanel);
             parentPanel.revalidate();
             parentPanel.repaint();
         }
         articleList.setViewportView(parentPanel);
     }
-    
+
     public void removeItems() {
         Component[] componentList = parentPanel.getComponents();
         int i = 0;
@@ -138,17 +166,16 @@ public class ViewOutputs extends DrawnView {
             }
             i++;
         }
-        
+
         parentPanel.revalidate();
         parentPanel.repaint();
-        rss.clearLists();
     }
-    
+
     public boolean setCopyPaste() {
         ViewOutputs.addTo(customFeedField);
         return true;
     }
-    
+
     public void clear(JTextField field) {
         field.setText("");
     }

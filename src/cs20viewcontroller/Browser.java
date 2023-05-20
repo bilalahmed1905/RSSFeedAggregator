@@ -1,44 +1,35 @@
 package cs20viewcontroller;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.IOException;
-import javax.swing.JFrame;
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
+import java.net.URL;
 
-public class Browser extends JFrame implements ActionListener {
-
-    private JEditorPane pane;
-    private String url;
-
+public class Browser extends JPanel {
+    int urlcount =0;
+    
+    final private JEditorPane browserPane;
+    
     public Browser() {
-        super("Swing HTML Browser");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        pane = new JEditorPane();
-        pane.setEditable(false);
-        add(new JScrollPane(pane));
-        setSize(new Dimension(600, 600));
-    }
+        setLayout(new BorderLayout());
 
-    @Override
-    public void actionPerformed(ActionEvent evt) {
-        try {
-            pane.setPage(this.url);
-        } catch (IOException t) {
-        }
+        browserPane = new JEditorPane();
+        browserPane.setEditable(false);
+        browserPane.setContentType("text/html");
+
+        JScrollPane scrollPane = new JScrollPane(browserPane);
+
+        add(scrollPane, BorderLayout.CENTER);
     }
 
     public void loadURL(String url) {
-         try {
-            pane.setPage(url);
-        } catch (IOException t) {
+        try {
+            urlcount++;
+            System.out.println("URL:" + url + "count: "+urlcount);
+            browserPane.setPage(url);
+            
+        } catch (IOException e) {
+           e.printStackTrace();
         }
-    }
-    
-    public static void main(String[] args) {
-     Browser b = new Browser();
-     b.loadURL("https://cbc.ca");
-     b.setVisible(true);
     }
 }

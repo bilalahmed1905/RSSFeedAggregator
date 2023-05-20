@@ -10,14 +10,14 @@
  */
 package cs20viewcontroller;
 
-import cs20models.FeedMessage;
+import cs20models.FeedItem;
 import cs20models.FeedParser;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import cs20models.SQL;
+import cs20models.Database;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,15 +53,15 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            ArrayList<FeedMessage> arr = new ArrayList<>(10000);
+            ArrayList<FeedItem> arr = new ArrayList<>(10000);
             try {
-                arr = SQL.getAllArticles();
+                arr = Database.getAllArticles();
             } catch (SQLException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
             }
             FeedParser parser = new FeedParser(customFeedField.getText());
             try {
-                SQL.addChannel(parser.readFeed());
+                Database.addChannel(parser.readFeed());
             } catch (SQLException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -101,18 +101,13 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            try {
-                feeds = SQL.getAllArticles();
-            } catch (SQLException ex) {
-                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
-            }
             rss.setURL("http://rss.cnn.com/rss/cnn_topstories.rss");
             try {
                 rss.sendItemsToDatabase();
             } catch (SQLException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
             }
-            addItems(rss.getItemCount(), feeds);
+//            addItems(rss.getItemCount(), feeds);
         }
 
     }
@@ -121,18 +116,13 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            try {
-                feeds = SQL.getAllArticles();
-            } catch (SQLException ex) {
-                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
-            }
             rss.setURL("https://www.ctvnews.ca/rss/ctvnews-ca-top-stories-public-rss-1.822009");
             try {
                 rss.sendItemsToDatabase();
             } catch (SQLException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
             }
-            addItems(rss.getItemCount(), feeds);
+//            addItems(rss.getItemCount(), feeds);
 
         }
 
@@ -142,9 +132,9 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            ArrayList<FeedMessage> arr = new ArrayList<>();
+            ArrayList<FeedItem> arr = new ArrayList<>();
             try {
-                arr = SQL.getAllArticles();
+                arr = Database.getAllArticles();
             } catch (SQLException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -167,9 +157,9 @@ public class ViewUserActions extends ViewOutputs {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            ArrayList<FeedMessage> arr = new ArrayList<>();
+            ArrayList<FeedItem> arr = new ArrayList<>();
             try {
-                arr = SQL.getAllArticles();
+                arr = Database.getAllArticles();
             } catch (SQLException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -198,16 +188,15 @@ public class ViewUserActions extends ViewOutputs {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        ArrayList<FeedMessage> arr = new ArrayList<>();
+        ArrayList<FeedItem> arr = new ArrayList<>();
         try {
-            arr = SQL.getAllArticles();
-            System.out.println(arr.get(1).getTitle() + " " + SQL.getResultSize());
-            addItems(SQL.getResultSize(), arr);
+            arr = Database.getAllArticles();
+            addItems(Database.getResultSize(), arr);
         } catch (SQLException ex) {
             Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-}
+    }
 
 
     /*

@@ -51,7 +51,6 @@ public class Feed {
         return pubDate;
     }
 
-
     @Override
     public String toString() {
         return "Feed [copyright=" + copyright + ", description=" + description
