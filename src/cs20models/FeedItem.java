@@ -1,8 +1,14 @@
 package cs20models;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,12 +19,15 @@ public class FeedItem {
     String url;
     String title;
     String description;
-    String link;
     String author;
     String guid;
+    String rssLink;
+    String itemHash;
+    long itemEpoch;
     int itemCount = 0;
     ArrayList<FeedItem> articles = new ArrayList<>(1000);
     public String date;
+    public int itemReadStatus;
 
     public FeedItem() {
 
@@ -30,6 +39,38 @@ public class FeedItem {
 
     public String getURL() {
         return this.url;
+    }
+
+    public void setItemEpoch(long e) {
+        this.itemEpoch = e;
+    }
+
+    public long getItemEpoch() {
+        return itemEpoch;
+    }
+
+    public void setHash(String h) {
+        this.itemHash = h;
+    }
+
+    public String getHash() {
+        return this.itemHash;
+    }
+
+    public String getRSSLink() {
+        return this.rssLink;
+    }
+
+    public void setRSSLink(String l) {
+        this.rssLink = l;
+    }
+
+    public int getItemReadStatus() {
+        return this.itemReadStatus;
+    }
+
+    public void setItemReadStatus(int s) {
+        this.itemReadStatus = s;
     }
 
     public String getTitle() {
@@ -46,14 +87,6 @@ public class FeedItem {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
     }
 
     public String getAuthor() {
@@ -86,23 +119,30 @@ public class FeedItem {
         }
         return arr;
     }
+// split fetch and store
 
-    public void sendItemsToDatabase() throws SQLException {
+    public void fetchAndStoreFeed(String rssURL) throws SQLException, NoSuchAlgorithmException, ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
         try {
-            Document doc = Jsoup.connect(this.url).get();
+            Document doc = Jsoup.connect(rssURL).get();
             Elements items = doc.select("item");
             for (Element item : items) {
                 articles.add(itemCount, new FeedItem());
                 if (item.children().select("description").text().contains("img")) {
-                 articles.get(itemCount).setDesc(" ");
+                    articles.get(itemCount).setDesc(" ");
                 } else {
-                 articles.get(itemCount).setDesc(item.children().select("description").text());
+                    articles.get(itemCount).setDesc(item.children().select("description").text());
                 }
                 articles.get(itemCount).setGuid(item.children().select("guid").text());
                 articles.get(itemCount).setAuthor(item.children().select("author").text());
                 articles.get(itemCount).setTitle(item.children().select("title").text());
                 articles.get(itemCount).setURL(item.children().select("link").text());
                 articles.get(itemCount).setDate(item.children().select("pubDate").text());
+                articles.get(itemCount).setRSSLink(rssURL);
+                Date date = formatter.parse(articles.get(itemCount).getDate());
+                articles.get(itemCount).setItemEpoch(date.getTime());
+                articles.get(itemCount).setHash(Utilities.MD5(articles.get(itemCount).guid + articles.get(itemCount).url));
+                articles.get(itemCount).setItemReadStatus(0);
                 Database.addArticle(this.articles.get(itemCount));
                 this.itemCount++;
             }

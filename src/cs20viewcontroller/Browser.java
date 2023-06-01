@@ -3,33 +3,26 @@ package cs20viewcontroller;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
 
 public class Browser extends JPanel {
-    int urlcount =0;
-    
+
+    int urlcount = 0;
+    public JScrollPane scrollPane;
     final private JEditorPane browserPane;
-    
+
     public Browser() {
         setLayout(new BorderLayout());
 
         browserPane = new JEditorPane();
         browserPane.setEditable(false);
         browserPane.setContentType("text/html");
-
-        JScrollPane scrollPane = new JScrollPane(browserPane);
-
+        scrollPane = new JScrollPane(browserPane);
         add(scrollPane, BorderLayout.CENTER);
+        repaint();
+        revalidate();
     }
 
-    public void loadURL(String url) {
-        try {
-            urlcount++;
-            System.out.println("URL:" + url + "count: "+urlcount);
-            browserPane.setPage(url);
-            
-        } catch (IOException e) {
-           e.printStackTrace();
-        }
+    public void loadURL(String url) throws IOException {
+        browserPane.setPage(url);
     }
 }
