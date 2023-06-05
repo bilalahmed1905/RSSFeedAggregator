@@ -47,6 +47,7 @@ public class AppRunner {
         @Override
         public void run() {
             CompleteViewController theMainView = new CompleteViewController();
+            theMainView.setTitle("RSS Feed Aggregator");
             theMainView.setVisible(true);
         }
     };

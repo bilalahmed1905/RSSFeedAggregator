@@ -31,7 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
+import java.awt.List;
 import javax.swing.JTextField;
 import javax.swing.undo.UndoManager;
 
@@ -114,6 +114,7 @@ public class ViewOutputs extends DrawnView {
     public void updateReadStatus(int r) {
         this.readStatus = r;
     }
+
     public void addItems(int numberOfItems, ArrayList<FeedItem> arr) {
         parentPanel.setLayout(new BoxLayout(parentPanel, BoxLayout.Y_AXIS));
         for (int i = numberOfItems - 1; i > 0; i--) {
@@ -142,6 +143,7 @@ public class ViewOutputs extends DrawnView {
             itemPanel.add(dateLabel, BorderLayout.SOUTH);
             itemPanel.add(headlineLabel, BorderLayout.NORTH);
             itemPanel.add(descLabel, BorderLayout.CENTER);
+
             itemPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -218,8 +220,10 @@ public class ViewOutputs extends DrawnView {
 
     public void showSubscribedChannels() {
         JFrame fr = new JFrame();
+        fr.setTitle("Subscribed Channels");
         JPanel p = new JPanel();
-        JScrollPane j = new JScrollPane();
+        List l = new List();
+        
         JLabel sc = new JLabel("Subscribed Channel List");
         sc.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
         p.add(sc);
@@ -230,56 +234,50 @@ public class ViewOutputs extends DrawnView {
         } catch (SQLException ex) {
             Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Font title = new Font(Font.SANS_SERIF, Font.BOLD, 16);
         for (int i = 0; i < arr.size(); i++) {
-            JPanel sub = new JPanel();
-            JLabel theTitle = new JLabel(arr.get(i).getTitle() + "\n");
-            theTitle.setFont(title);
-            sub.add(theTitle);
-//            sub.addMouseListener(new MouseAdapter() {
-//                @Override
-//                public void mouseClicked(MouseEvent e) {
-//                    showDialog("Remove Channel?", "Would you like to remove channel?");
-//                }
-//            });
-            sub.add(Box.createVerticalStrut(5));
-            sub.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            p.add(sub);
+            l.add(arr.get(i).getTitle());
         }
-        fr.add(p);
+        fr.add(l);
         fr.setSize(600, 450);
         fr.setVisible(true);
     }
 
     public void fetchEveryInterval(long interval) {
-    TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            ArrayList<Channel> channels = new ArrayList<>();
-            try {
-                channels = Database.getAllChannels();
-                for (int i = 0; i < channels.size(); i++) {
-                    try {
-                        rss.fetchAndStoreFeed(channels.get(i).getRSSLink());
-                    } catch (NoSuchAlgorithmException | ParseException ex) {
-                        Logger.getLogger(ViewOutputs.class.getName()).log(Level.SEVERE, null, ex);
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                ArrayList<Channel> channels = new ArrayList<>();
+                try {
+                    channels = Database.getAllChannels();
+                    for (int i = 0; i < channels.size(); i++) {
+                        try {
+                            rss.fetchAndStoreFeed(channels.get(i).getRSSLink());
+                        } catch (NoSuchAlgorithmException | ParseException ex) {
+                            Logger.getLogger(ViewOutputs.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
+                    System.out.println("Fetched at interval");
+                } catch (SQLException ex) {
+                    Logger.getLogger(ViewOutputs.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                System.out.println("Fetched at interval");
-            } catch (SQLException ex) {
-                Logger.getLogger(ViewOutputs.class.getName()).log(Level.SEVERE, null, ex);
+                ArrayList<FeedItem> arr = new ArrayList<>();
+                try {
+                    arr = Database.fetchArticles();
+                    addItems(Database.getResultSize(), arr);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+                    showError("Warning!", "Could not retrieve articles from database...");
+                }
             }
-        }
-    };
+        };
 
-    Timer timer = new Timer("Update from database");
-    long delay = 0; // Initial delay before the first execution
-    long period = interval; // Interval between subsequent executions
+        Timer timer = new Timer("Update from database");
+        long delay = 0; // Initial delay before the first execution
+        long period = interval; // Interval between subsequent executions
 
-    timer.scheduleAtFixedRate(task, delay, period);
-}
-
-
+        timer.scheduleAtFixedRate(task, delay, period);
+    }
+    
     public void showError(String title, String message) {
         JOptionPane pane = new JOptionPane(message, JOptionPane.WARNING_MESSAGE);
         JDialog dialog = pane.createDialog(title);

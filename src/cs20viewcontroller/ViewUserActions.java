@@ -78,7 +78,6 @@ public class ViewUserActions extends ViewOutputs {
                     parser = new FeedParser(url);
                     try {
                         channelInfo = parser.getRChannelInfo();
-
                     } catch (RuntimeException e) {
                         showError("Warning!", "Unable to retrieve Channel Info or \n The URL is not an RSS Feed");
                     }
@@ -96,7 +95,7 @@ public class ViewUserActions extends ViewOutputs {
                 ViewOutputs.addTo(customFeedField);
             } catch (URISyntaxException ex) {
                 Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
-                 showError("Warning!", "Unable to retrieve Channel Info or \n The URL is not an RSS Feed");
+                showError("Warning!", "Unable to retrieve Channel Info or \n The URL is not an RSS Feed");
             }
         }
 
@@ -147,7 +146,7 @@ public class ViewUserActions extends ViewOutputs {
     private class Refresh implements ActionListener {
 
         @Override
-        public void actionPerformed(ActionEvent ae) {;
+        public void actionPerformed(ActionEvent ae) {
             ArrayList<Channel> channels = new ArrayList<>();
             try {
                 channels = Database.getAllChannels();
@@ -239,6 +238,8 @@ public class ViewUserActions extends ViewOutputs {
         this.openInBrowserBtn.addActionListener(new OpenInDefaultBrowser());
         this.addWindowListener(new FetchArticles());
         this.openInNewWinBtn.addActionListener(new OpenInNewWindow());
-        this.subChannelBtn.addActionListener(new ShowSubscribedChannels());
+        this.feedMenu_openInBrowser.addActionListener(new OpenInDefaultBrowser());
+        this.feedMenu_openInNewWin.addActionListener(new OpenInNewWindow());
+        this.feedMenu_viewChannels.addActionListener(new ShowSubscribedChannels());
     }
 }
