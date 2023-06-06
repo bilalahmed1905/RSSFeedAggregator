@@ -32,6 +32,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import java.awt.List;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 import javax.swing.undo.UndoManager;
 
@@ -127,12 +132,12 @@ public class ViewOutputs extends DrawnView {
             JPanel itemPanel = new JPanel(new BorderLayout());
             JLabel headlineLabel = new JLabel(headline);
             JLabel dateLabel = new JLabel(date);
-            Font title = new Font(Font.SANS_SERIF, Font.BOLD, 23);
-            Font subtitle = new Font(Font.SERIF, Font.PLAIN, 14);
+            Font title = new Font(Font.SANS_SERIF, Font.BOLD, 18);
+            Font subtitle = new Font(Font.SERIF, Font.PLAIN, 13);
             headlineLabel.setFont(title);
             JLabel descLabel = new JLabel(desc);
-            headlineLabel.setPreferredSize(new Dimension(200, 25));
-            descLabel.setPreferredSize(new Dimension(500, 50));
+            headlineLabel.setPreferredSize(new Dimension(100, 25));
+            descLabel.setPreferredSize(new Dimension(100, 50));
             descLabel.setFont(subtitle);
             itemPanel.setBounds(150, 150, 100, 100);
             if (readStatus == 1) {
@@ -140,9 +145,9 @@ public class ViewOutputs extends DrawnView {
             } else if (readStatus == 0) {
                 itemPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
             }
-            itemPanel.add(dateLabel, BorderLayout.SOUTH);
-            itemPanel.add(headlineLabel, BorderLayout.NORTH);
-            itemPanel.add(descLabel, BorderLayout.CENTER);
+            itemPanel.add(dateLabel, BorderLayout.NORTH);
+            itemPanel.add(headlineLabel, BorderLayout.CENTER);
+            itemPanel.add(descLabel, BorderLayout.SOUTH);
 
             itemPanel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -217,13 +222,43 @@ public class ViewOutputs extends DrawnView {
     public void clear(JTextField field) {
         field.setText("");
     }
+    List l = new List();
 
     public void showSubscribedChannels() {
         JFrame fr = new JFrame();
         fr.setTitle("Subscribed Channels");
         JPanel p = new JPanel();
-        List l = new List();
-        
+        l.addKeyListener(new KeyAdapter() {
+            String selectedChannel = l.getSelectedItem();
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("key pressed" + e.getKeyCode());
+                // 8 is keycode for delete
+                if (e.getKeyCode() == 8) {
+                    try {
+                        if (selectedChannel.equals(l.getSelectedItem())) {
+                            Database.removeChannel(selectedChannel);
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ViewOutputs.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    l.repaint();
+                    l.revalidate();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == 8) {
+                    l.remove(selectedChannel);
+                    l.repaint();
+                    l.revalidate();
+                }
+            }
+        });
+
         JLabel sc = new JLabel("Subscribed Channel List");
         sc.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
         p.add(sc);
@@ -277,7 +312,7 @@ public class ViewOutputs extends DrawnView {
 
         timer.scheduleAtFixedRate(task, delay, period);
     }
-    
+
     public void showError(String title, String message) {
         JOptionPane pane = new JOptionPane(message, JOptionPane.WARNING_MESSAGE);
         JDialog dialog = pane.createDialog(title);

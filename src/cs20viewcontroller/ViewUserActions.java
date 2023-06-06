@@ -158,16 +158,18 @@ public class ViewUserActions extends ViewOutputs {
                     }
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(ViewOutputs.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(ViewOutputs.class.getName()).log(Level.SEVERE, null, ex);
             }
             ArrayList<FeedItem> arr = new ArrayList<>();
             try {
                 arr = Database.fetchArticles();
-                addItems(Database.getResultSize(), arr);
+                removeItems();
+                addItems(arr.size(), arr);
             } catch (SQLException ex) {
-                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
                 showError("Warning!", "Could not retrieve articles from database...");
             }
+            
         }
     }
 

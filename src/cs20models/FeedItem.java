@@ -12,6 +12,7 @@ import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 public class FeedItem {
@@ -128,12 +129,12 @@ public class FeedItem {
             Elements items = doc.select("item");
             for (Element item : items) {
                 articles.add(itemCount, new FeedItem());
-                if (item.children().select("description").text().contains("img")) {
-                    articles.get(itemCount).setDesc(" ");
-                } else {
-                    articles.get(itemCount).setDesc(item.children().select("description").text());
-                }
-                articles.get(itemCount).setGuid(item.children().select("guid").text());
+                String rawDescHTML = item.children().select("description").html();
+                Document descHTMLCdata = Jsoup.parse(rawDescHTML);
+                String descHTML = descHTMLCdata.text();
+                String descText = Jsoup.parse(descHTML).text();
+                articles.get(itemCount).setDesc(descText);
+               articles.get(itemCount).setGuid(item.children().select("guid").text());
                 articles.get(itemCount).setAuthor(item.children().select("author").text());
                 articles.get(itemCount).setTitle(item.children().select("title").text());
                 articles.get(itemCount).setURL(item.children().select("link").text());
@@ -141,7 +142,7 @@ public class FeedItem {
                 articles.get(itemCount).setRSSLink(rssURL);
                 Date date = formatter.parse(articles.get(itemCount).getDate());
                 articles.get(itemCount).setItemEpoch(date.getTime());
-                articles.get(itemCount).setHash(Utilities.MD5(articles.get(itemCount).guid + articles.get(itemCount).url));
+                articles.get(itemCount).setHash(Utilities.MD5(articles.get(itemCount).guid + articles.get(itemCount).rssLink));
                 articles.get(itemCount).setItemReadStatus(0);
                 Database.addArticle(this.articles.get(itemCount));
                 this.itemCount++;

@@ -1,9 +1,12 @@
 package cs20models;
+
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Database {
 
@@ -75,6 +78,9 @@ public class Database {
 
     public static void addArticle(FeedItem f) throws SQLException {
         String sql = "insert into " + FEEDTABLE + "( itemTitle, itemDesc, itemImage, itemLink, itemDate, itemReadStatus, itemCategory, itemAuthor, channelRSSLink, itemHashString, itemGUID, itemEpoch) values (?,?,?,?,?,?,?,?,?,?,?, ?)";
+
+        //   String sql = "insert into " + FEEDTABLE + "( itemTitle, itemDesc, itemImage, itemLink, itemDate, itemReadStatus, itemCategory, itemAuthor, channelRSSLink, itemHashString, itemGUID, itemEpoch) values (?,?,?,?,?,?,?,?,?,?,?, ?)";
+        // sql += " ON CONFLICT(itemHashString) DO UPDATE SET ";
         PreparedStatement ps = Database.connect().prepareStatement(sql);
 
         try {
@@ -91,7 +97,12 @@ public class Database {
             ps.setString(11, f.guid);
             ps.setLong(12, f.itemEpoch);
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+
+            // SQLITE_CONSTRAINT_UNIQUE = 19
+            if (ex.getErrorCode() == 19) {
+
+            }
         } finally {
             System.out.println("Successfully Stored into database!!!");
         }
@@ -133,6 +144,17 @@ public class Database {
         } finally {
             System.out.println("Successfully Stored into database!!!");
         }
+    }
+
+    public static void removeChannel(String title) throws SQLException {
+        String sql = "DELETE FROM " + FEEDTABLE + " WHERE channelTitle=?";
+        try ( Connection conn = Database.connect();  PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, title);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+
     }
 
     public static int getReadStatus(String title) throws SQLException {
