@@ -18,3 +18,6 @@ as the JEditorPane isn't very good at supporting HTML**
 You can also read the article in your default browser or in a new window.
 
 You can add multiple channels and see which ones you have subscribed to. 
+
+This project is under the **Creative Commons Zero v1.0 Universal**
+
