@@ -3,7 +3,6 @@ package cs20models;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import java.util.Locale;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 public class FeedItem {
@@ -134,7 +132,7 @@ public class FeedItem {
                 String descHTML = descHTMLCdata.text();
                 String descText = Jsoup.parse(descHTML).text();
                 articles.get(itemCount).setDesc(descText);
-               articles.get(itemCount).setGuid(item.children().select("guid").text());
+                articles.get(itemCount).setGuid(item.children().select("guid").text());
                 articles.get(itemCount).setAuthor(item.children().select("author").text());
                 articles.get(itemCount).setTitle(item.children().select("title").text());
                 articles.get(itemCount).setURL(item.children().select("link").text());

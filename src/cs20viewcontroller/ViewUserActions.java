@@ -10,7 +10,6 @@
  */
 package cs20viewcontroller;
 
-import cs20models.AllModelsForView;
 import cs20models.FeedItem;
 import cs20models.FeedParser;
 import java.awt.event.ActionEvent;
@@ -28,16 +27,9 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import cs20models.Utilities;
-import java.awt.Color;
-import java.awt.Font;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 /**
  * ViewUserActions is a class that contains actions users can trigger.
@@ -169,7 +161,7 @@ public class ViewUserActions extends ViewOutputs {
 //                Logger.getLogger(ViewUserActions.class.getName()).log(Level.SEVERE, null, ex);
                 showError("Warning!", "Could not retrieve articles from database...");
             }
-            
+
         }
     }
 

@@ -69,5 +69,5 @@ public class Channel {
                 + ", language=" + language + ", link=" + link + ", pubDate="
                 + pubDate + ", title=" + title + "]";
     }
-    
+
 }

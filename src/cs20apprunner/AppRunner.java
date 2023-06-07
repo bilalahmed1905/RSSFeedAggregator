@@ -23,11 +23,10 @@
  * cs20models and cs20viewcontroller packages.
  */
 
-/*
+ /*
  * WARNING: There is nothing in this file for students to edit or change.
  *          This file is intended to have no student-serviceable code.
  */
-
 package cs20apprunner;
 
 import cs20viewcontroller.CompleteViewController;
@@ -38,7 +37,7 @@ import java.awt.Color;
  * @author cheng
  */
 public class AppRunner {
-    
+
     // WARNING: Do NOT modify or write any code in this file!
     //          This file is intended to have no student-serviceable code.
     // <editor-fold defaultstate="collapsed" desc="Template class - do NOT modify">

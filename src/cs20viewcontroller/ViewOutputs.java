@@ -32,11 +32,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import java.awt.List;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 import javax.swing.undo.UndoManager;
 
@@ -127,7 +124,6 @@ public class ViewOutputs extends DrawnView {
             String desc = arr.get(i).getDescription();
             String URL = arr.get(i).getURL();
             String date = arr.get(i).getDate();
-            long epoch = arr.get(i).getItemEpoch();
             this.readStatus = arr.get(i).getItemReadStatus();
             JPanel itemPanel = new JPanel(new BorderLayout());
             JLabel headlineLabel = new JLabel(headline);
@@ -234,7 +230,7 @@ public class ViewOutputs extends DrawnView {
             @Override
             public void keyPressed(KeyEvent e) {
                 System.out.println("key pressed" + e.getKeyCode());
-                // 8 is keycode for delete
+                // 8 is keycode for delete key
                 if (e.getKeyCode() == 8) {
                     try {
                         if (selectedChannel.equals(l.getSelectedItem())) {
