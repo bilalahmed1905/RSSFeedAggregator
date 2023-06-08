@@ -1,9 +1,6 @@
 package cs20models;
 
 import java.sql.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Database {
@@ -131,6 +128,17 @@ public class Database {
         return articles;
     }
 
+    public static void removeChannel(String title) throws SQLException {
+        String sql = "DELETE FROM " + FEEDTABLE + " WHERE channelTitle=?";
+        try ( Connection conn = Database.connect();  PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, title);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+
+    }
+
     public static void updateReadStatus(int status, String title) throws SQLException {
         String sql = "UPDATE " + FEEDTABLE + " SET itemReadStatus = ? WHERE itemTitle = ?";
         PreparedStatement ps = Database.connect().prepareStatement(sql);
@@ -142,17 +150,6 @@ public class Database {
         } finally {
             System.out.println("Successfully Stored into database!!!");
         }
-    }
-
-    public static void removeChannel(String title) throws SQLException {
-        String sql = "DELETE FROM " + FEEDTABLE + " WHERE channelTitle=?";
-        try ( Connection conn = Database.connect();  PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, title);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-
-        }
-
     }
 
     public static int getReadStatus(String title) throws SQLException {

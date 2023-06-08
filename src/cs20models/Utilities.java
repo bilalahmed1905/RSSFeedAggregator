@@ -32,7 +32,6 @@ public class Utilities {
     public static String getDomainName(String url) throws URISyntaxException {
         URI uri = new URI(url);
         String host = uri.getHost();
-        System.out.println(host);
         return host;
     }
 

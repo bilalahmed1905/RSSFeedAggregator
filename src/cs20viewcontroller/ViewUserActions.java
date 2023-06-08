@@ -26,7 +26,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import cs20models.Utilities;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import javax.swing.JFrame;
@@ -76,7 +75,6 @@ public class ViewUserActions extends ViewOutputs {
                 } catch (RuntimeException e) {
                     showError("Warning!", "Invalid URL");
                 }
-                String domain = Utilities.getDomainName(url);
                 try {
                     Database.addChannel(channelInfo);
                     rss.fetchAndStoreFeed(url);

@@ -118,7 +118,6 @@ public class FeedItem {
         }
         return arr;
     }
-// split fetch and store
 
     public void fetchAndStoreFeed(String rssURL) throws SQLException, NoSuchAlgorithmException, ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
@@ -138,8 +137,8 @@ public class FeedItem {
                 articles.get(itemCount).setURL(item.children().select("link").text());
                 articles.get(itemCount).setDate(item.children().select("pubDate").text());
                 articles.get(itemCount).setRSSLink(rssURL);
-                Date date = formatter.parse(articles.get(itemCount).getDate());
-                articles.get(itemCount).setItemEpoch(date.getTime());
+                Date d = formatter.parse(articles.get(itemCount).getDate());
+                articles.get(itemCount).setItemEpoch(d.getTime());
                 articles.get(itemCount).setHash(Utilities.MD5(articles.get(itemCount).guid + articles.get(itemCount).rssLink));
                 articles.get(itemCount).setItemReadStatus(0);
                 Database.addArticle(this.articles.get(itemCount));
@@ -147,7 +146,7 @@ public class FeedItem {
             }
 
         } catch (IOException ex) {
-
+         
         }
     }
 
