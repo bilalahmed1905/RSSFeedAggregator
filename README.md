@@ -19,5 +19,7 @@ You can also read the article in your default browser or in a new window.
 
 You can add multiple channels and see which ones you have subscribed to. 
 
+When you add a new channel, click the refresh button to load the articles from that channel.
+
 This project is under the **Creative Commons Zero v1.0 Universal**
 
